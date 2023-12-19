@@ -13,21 +13,21 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @OneToOne(cascade = [CascadeType.ALL])
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "name_info_id")
     val nameInfo: NameInfo = NameInfo(),
 
-    @OneToMany(cascade = [CascadeType.ALL])
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "user_id")
-    val persons: List<Person> = emptyList(),
+    val persons: Set<Person> = emptySet(),
 
-    @OneToMany(cascade = [CascadeType.ALL])
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "user_id")
-    val personRelations: List<PersonRelation> = emptyList(),
+    val personRelations: Set<PersonRelation> = emptySet(),
 
-    @OneToMany(cascade = [CascadeType.ALL])
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "user_id")
-    val dayData: List<DayData> = emptyList(),
+    val dayData: Set<DayData> = emptySet(),
 
     @Column(nullable = false, unique = true)
     val email: String = "",

@@ -13,22 +13,22 @@ class DayData(
     @GeneratedValue
     val id: Long? = null,
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "diary_data_id")
     val diaryData: DiaryData = DiaryData(),
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "dream_data_id")
     val dreamData: DreamData = DreamData(),
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "mood_data_id")
     val moodData: MoodData = MoodData(),
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "sleep_data_id")
     val sleepData: SleepData = SleepData(),
-    
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     val user: User = User()

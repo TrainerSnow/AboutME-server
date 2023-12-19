@@ -17,6 +17,6 @@ class DreamData(
 
     @OneToMany
     @JoinColumn(name = "dream_data_id")
-    val dreams: List<Dream> = emptyList()
+    val dreams: Set<Dream> = emptySet()
 
 )

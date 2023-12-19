@@ -36,7 +36,7 @@ class Dream(
         joinColumns = [JoinColumn(name = "dream_id")],
         inverseJoinColumns = [JoinColumn(name = "person_id")]
     )
-    val persons: List<Person> = emptyList(),
+    val persons: Set<Person> = emptySet(),
 
     @ManyToOne
     @JoinColumn(name = "dream_data_id")

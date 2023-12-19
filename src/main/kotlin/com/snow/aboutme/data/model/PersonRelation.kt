@@ -1,12 +1,6 @@
 package com.snow.aboutme.data.model;
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
+import jakarta.persistence.*
 
 /**
  * Represents a relation that a user may have to a person
@@ -26,6 +20,10 @@ class PersonRelation(
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    val user: User = User()
+    val user: User = User(),
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JoinColumn(name = "person_relation_id")
+    val persons: Set<Person> = emptySet()
 
 )

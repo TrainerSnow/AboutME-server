@@ -17,7 +17,7 @@ class Person(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @OneToOne(cascade = [CascadeType.ALL])
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "name_info_id")
     val nameInfo: NameInfo = NameInfo(),
 
@@ -30,6 +30,6 @@ class Person(
     val user: User = User(),
 
     @ManyToMany(mappedBy = "persons")
-    val dreams: List<Dream> = emptyList()
+    val dreams: Set<Dream> = emptySet()
 
 )
