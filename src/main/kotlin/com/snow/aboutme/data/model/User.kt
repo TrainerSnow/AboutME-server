@@ -29,6 +29,10 @@ class User(
     @JoinColumn(name = "user_id")
     val dayData: Set<DayData> = emptySet(),
 
+    @OneToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "refresh_token_id")
+    val refreshToken: RefreshToken? = null,
+
     @Column(nullable = false, unique = true)
     val email: String = "",
 
