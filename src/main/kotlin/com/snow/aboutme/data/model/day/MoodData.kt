@@ -1,5 +1,6 @@
 package com.snow.aboutme.data.model.day;
 
+import com.snow.aboutme.data.model.base.AbstractEntity
 import jakarta.persistence.*
 
 /**
@@ -7,10 +8,6 @@ import jakarta.persistence.*
  */
 @Entity
 class MoodData(
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
 
     @Column(nullable = false)
     val constant: Boolean = true,
@@ -27,4 +24,4 @@ class MoodData(
     @Column(nullable = true)
     val moodEvening: Float? = null,
 
-)
+): AbstractEntity()

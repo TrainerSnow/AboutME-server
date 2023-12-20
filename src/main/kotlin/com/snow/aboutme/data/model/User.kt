@@ -1,5 +1,6 @@
 package com.snow.aboutme.data.model
 
+import com.snow.aboutme.data.model.base.AbstractEntity
 import jakarta.persistence.*
 
 /**
@@ -8,10 +9,6 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "users")
 class User(
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
 
     @Column(nullable = false, unique = true)
     val email: String = "",
@@ -38,4 +35,4 @@ class User(
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user")
     val dayData: Set<DayData> = emptySet(),
 
-)
+    ) : AbstractEntity()

@@ -1,14 +1,10 @@
 package com.snow.aboutme.data.model;
 
+import com.snow.aboutme.data.model.base.AbstractEntity
 import jakarta.persistence.*
 
 @Entity
 class Person(
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
-
 
     @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = false)
     @JoinColumn(name = "name_info_id", nullable = false)
@@ -27,4 +23,4 @@ class Person(
     @ManyToMany(mappedBy = "persons")
     val dreams: MutableSet<Dream> = mutableSetOf()
 
-)
+): AbstractEntity()

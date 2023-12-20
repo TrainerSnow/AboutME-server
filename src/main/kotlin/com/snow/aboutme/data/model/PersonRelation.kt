@@ -1,5 +1,6 @@
 package com.snow.aboutme.data.model;
 
+import com.snow.aboutme.data.model.base.AbstractEntity
 import jakarta.persistence.*
 
 /**
@@ -7,10 +8,6 @@ import jakarta.persistence.*
  */
 @Entity
 class PersonRelation(
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
 
     @Column(nullable = false)
     val name: String = "",
@@ -26,4 +23,4 @@ class PersonRelation(
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "relation")
     val persons: Set<Person> = emptySet()
 
-)
+): AbstractEntity()

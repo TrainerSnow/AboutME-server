@@ -1,5 +1,6 @@
 package com.snow.aboutme.data.model;
 
+import com.snow.aboutme.data.model.base.AbstractEntity
 import jakarta.persistence.*
 
 /**
@@ -7,10 +8,6 @@ import jakarta.persistence.*
  */
 @Entity
 class NameInfo(
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
 
     @Column(nullable = false)
     val firstName: String = "",
@@ -24,4 +21,4 @@ class NameInfo(
     @Column(nullable = true)
     val title: String? = null
 
-)
+): AbstractEntity()

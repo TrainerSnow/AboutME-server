@@ -1,14 +1,11 @@
 package com.snow.aboutme.data.model;
 
+import com.snow.aboutme.data.model.base.AbstractEntity
 import com.snow.aboutme.data.model.day.DreamData
 import jakarta.persistence.*
 
 @Entity
 class Dream(
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
 
     @Column(nullable = false)
     val description: String = "",
@@ -36,4 +33,4 @@ class Dream(
     )
     val persons: MutableSet<Person> = mutableSetOf()
 
-)
+): AbstractEntity()

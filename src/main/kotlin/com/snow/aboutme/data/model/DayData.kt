@@ -1,5 +1,6 @@
 package com.snow.aboutme.data.model;
 
+import com.snow.aboutme.data.model.base.AbstractEntity
 import com.snow.aboutme.data.model.day.DiaryData
 import com.snow.aboutme.data.model.day.DreamData
 import com.snow.aboutme.data.model.day.MoodData
@@ -8,11 +9,6 @@ import jakarta.persistence.*
 
 @Entity
 class DayData(
-
-    @Id
-    @GeneratedValue
-    val id: Long? = null,
-
 
     @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = true)
     @JoinColumn(name = "diary_data_id", nullable = true)
@@ -35,4 +31,4 @@ class DayData(
     @JoinColumn(name = "user_id", nullable = false)
     val user: User? = null
 
-)
+): AbstractEntity()
