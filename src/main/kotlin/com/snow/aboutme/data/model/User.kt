@@ -13,30 +13,29 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "name_info_id")
-    val nameInfo: NameInfo = NameInfo(),
-
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "user_id")
-    val persons: Set<Person> = emptySet(),
-
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "user_id")
-    val personRelations: Set<PersonRelation> = emptySet(),
-
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "user_id")
-    val dayData: Set<DayData> = emptySet(),
-
-    @OneToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "refresh_token_id")
-    val refreshToken: RefreshToken? = null,
-
     @Column(nullable = false, unique = true)
     val email: String = "",
 
     @Column(nullable = false)
-    val passwordHash: String = ""
+    val passwordHash: String = "",
+
+
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = false)
+    @JoinColumn(name = "name_info_id", nullable = false)
+    val nameInfo: NameInfo? = null,
+
+    @OneToOne(cascade = [CascadeType.ALL], optional = true)
+    @JoinColumn(name = "refresh_token_id", nullable = true)
+    val refreshToken: RefreshToken? = null,
+
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user")
+    val persons: Set<Person> = emptySet(),
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user")
+    val personRelations: Set<PersonRelation> = emptySet(),
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user")
+    val dayData: Set<DayData> = emptySet(),
 
 )

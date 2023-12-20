@@ -1,14 +1,6 @@
 package com.snow.aboutme.data.model;
 
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToMany
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToOne
+import jakarta.persistence.*
 
 @Entity
 class Person(
@@ -17,19 +9,22 @@ class Person(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "name_info_id")
-    val nameInfo: NameInfo = NameInfo(),
 
-    @ManyToOne
-    @JoinColumn(name = "person_relation_id")
-    val relation: PersonRelation = PersonRelation(),
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = false)
+    @JoinColumn(name = "name_info_id", nullable = false)
+    val nameInfo: NameInfo? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    val user: User = User(),
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "person_relation_id", nullable = false)
+    val relation: PersonRelation? = null,
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: User? = null,
+
 
     @ManyToMany(mappedBy = "persons")
-    val dreams: Set<Dream> = emptySet()
+    val dreams: MutableSet<Dream> = mutableSetOf()
 
 )

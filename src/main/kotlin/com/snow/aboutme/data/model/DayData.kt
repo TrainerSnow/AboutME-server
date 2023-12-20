@@ -13,24 +13,26 @@ class DayData(
     @GeneratedValue
     val id: Long? = null,
 
-    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "diary_data_id")
-    val diaryData: DiaryData = DiaryData(),
 
-    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "dream_data_id")
-    val dreamData: DreamData = DreamData(),
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = true)
+    @JoinColumn(name = "diary_data_id", nullable = true)
+    val diaryData: DiaryData? = null,
 
-    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "mood_data_id")
-    val moodData: MoodData = MoodData(),
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = true)
+    @JoinColumn(name = "dream_data_id", nullable = true)
+    val dreamData: DreamData? = null,
 
-    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "sleep_data_id")
-    val sleepData: SleepData = SleepData(),
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = true)
+    @JoinColumn(name = "mood_data_id", nullable = true)
+    val moodData: MoodData? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    val user: User = User()
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = true)
+    @JoinColumn(name = "sleep_data_id", nullable = true)
+    val sleepData: SleepData? = null,
+
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: User? = null
 
 )

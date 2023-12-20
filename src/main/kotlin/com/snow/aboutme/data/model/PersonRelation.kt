@@ -18,12 +18,12 @@ class PersonRelation(
     @Column(nullable = true)
     val color: String? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    val user: User = User(),
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "person_relation_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: User? = null,
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "relation")
     val persons: Set<Person> = emptySet()
 
 )
