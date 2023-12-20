@@ -28,7 +28,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-graphql")
 
     //Spring Security
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.security:spring-security-web")
+    implementation("org.springframework.security:spring-security-config")
 
     //Kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
