@@ -1,24 +1,25 @@
 package com.snow.aboutme.data.model;
 
 import com.snow.aboutme.data.model.base.AbstractEntity
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
 
 /**
  * Information about a nameable record in the database
  */
 @Entity
 class NameInfo(
-
+    
     @Column(nullable = false)
-    val firstName: String = "",
+    var firstName: String = "",
 
     @Column(nullable = true)
-    val middleName: String? = null,
+    var middleName: String? = null,
 
     @Column(nullable = true)
-    val lastName: String? = null,
+    var lastName: String? = null,
 
     @Column(nullable = true)
-    val title: String? = null
+    var title: String? = null
 
 ): AbstractEntity()

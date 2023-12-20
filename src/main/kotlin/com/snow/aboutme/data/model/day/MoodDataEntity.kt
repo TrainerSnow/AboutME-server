@@ -1,27 +1,28 @@
 package com.snow.aboutme.data.model.day;
 
 import com.snow.aboutme.data.model.base.AbstractEntity
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
 
 /**
  * Represents one day of mood data for one user
  */
 @Entity
-class MoodData(
+class MoodDataEntity(
 
     @Column(nullable = false)
-    val constant: Boolean = true,
+    var constant: Boolean = true,
 
     @Column(nullable = true)
-    val moodLevel: Float? = null,
+    var moodLevel: Float? = null,
 
     @Column(nullable = true)
-    val moodMorning: Float? = null,
+    var moodMorning: Float? = null,
 
     @Column(nullable = true)
-    val moodNoon: Float? = null,
+    var moodNoon: Float? = null,
 
     @Column(nullable = true)
-    val moodEvening: Float? = null,
+    var moodEvening: Float? = null
 
-): AbstractEntity()
+) : AbstractEntity()

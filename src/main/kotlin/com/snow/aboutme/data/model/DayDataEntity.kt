@@ -1,34 +1,34 @@
 package com.snow.aboutme.data.model;
 
 import com.snow.aboutme.data.model.base.AbstractEntity
-import com.snow.aboutme.data.model.day.DiaryData
-import com.snow.aboutme.data.model.day.DreamData
-import com.snow.aboutme.data.model.day.MoodData
-import com.snow.aboutme.data.model.day.SleepData
+import com.snow.aboutme.data.model.day.DiaryDataEntity
+import com.snow.aboutme.data.model.day.DreamDataEntity
+import com.snow.aboutme.data.model.day.MoodDataEntity
+import com.snow.aboutme.data.model.day.SleepDataEntity
 import jakarta.persistence.*
 
 @Entity
-class DayData(
+class DayDataEntity : AbstractEntity() {
 
     @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = true)
     @JoinColumn(name = "diary_data_id", nullable = true)
-    val diaryData: DiaryData? = null,
+    var diaryData: DiaryDataEntity? = null
 
     @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = true)
     @JoinColumn(name = "dream_data_id", nullable = true)
-    val dreamData: DreamData? = null,
+    var dreamData: DreamDataEntity? = null
 
     @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = true)
     @JoinColumn(name = "mood_data_id", nullable = true)
-    val moodData: MoodData? = null,
+    var moodData: MoodDataEntity? = null
 
     @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = true)
     @JoinColumn(name = "sleep_data_id", nullable = true)
-    val sleepData: SleepData? = null,
+    var sleepData: SleepDataEntity? = null
 
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    val user: User? = null
+    lateinit var user: User
 
-): AbstractEntity()
+}

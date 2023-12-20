@@ -1,28 +1,28 @@
 package com.snow.aboutme.data.model;
 
 import com.snow.aboutme.data.model.base.AbstractEntity
-import com.snow.aboutme.data.model.day.DreamData
+import com.snow.aboutme.data.model.day.DreamDataEntity
 import jakarta.persistence.*
 
 @Entity
-class Dream(
+class DreamEntity : AbstractEntity() {
 
     @Column(nullable = false)
-    val description: String = "",
+    var description: String = ""
 
     @Column(nullable = true)
-    val annotation: String? = null,
+    var annotation: String? = null
 
     @Column(nullable = true)
-    val clearness: Float? = null,
+    var clearness: Float? = null
 
     @Column(nullable = true)
-    val mood: Float? = null,
+    var mood: Float? = null
 
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "dream_data_id", nullable = false)
-    val dreamData: DreamData? = null,
+    lateinit var dreamData: DreamDataEntity
 
 
     @ManyToMany
@@ -31,6 +31,6 @@ class Dream(
         joinColumns = [JoinColumn(name = "dream_id")],
         inverseJoinColumns = [JoinColumn(name = "person_id")]
     )
-    val persons: MutableSet<Person> = mutableSetOf()
+    var persons: MutableSet<Person> = mutableSetOf()
 
-): AbstractEntity()
+}
