@@ -42,7 +42,7 @@ class JwtService {
         return header?.getTokenFromHeader()
     }
 
-    fun getClaimsFromToken(token: String): Claims {
+    fun getClaimsFromToken(token: String): Claims? {
         return try {
             Jwts
                 .parserBuilder()
@@ -50,18 +50,14 @@ class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .body
-        } catch (e: MalformedJwtException) {
-            throw AboutMeException.AuthException.MalformedAuthException()
-        } catch (e: ExpiredJwtException) {
-            throw AboutMeException.AuthException.ExpiredAuthException()
-        } catch (e: JwtException) {
-            throw RuntimeException(e)
+        } catch (e: Exception) {
+            null
         }
     }
 
     fun validate(req: HttpServletRequest): User? {
         val token = getTokenFromHeader(req) ?: return null
-        val claims = getClaimsFromToken(token).ensureEmail()
+        val claims = getClaimsFromToken(token)?.ensureEmail() ?: return null
 
         val email = claims.subject
         val user = userRepository.findByEmail(email)
@@ -77,9 +73,9 @@ class JwtService {
     else
         null
 
-    private fun Claims.ensureEmail(): Claims {
-        if (this.subject == null) throw AboutMeException.AuthException.InsufficientAuthException()
-        return this
+    private fun Claims.ensureEmail(): Claims? {
+        return if (this.subject == null) null
+        else this
     }
 
     private fun User.createClaims(): Claims = Jwts
