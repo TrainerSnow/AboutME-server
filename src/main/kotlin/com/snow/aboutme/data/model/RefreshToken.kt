@@ -1,21 +1,23 @@
 package com.snow.aboutme.data.model;
 
-import com.snow.aboutme.data.model.base.AbstractEntity
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToOne
+import jakarta.persistence.*
 import java.time.Instant
+import java.util.*
 
 @Entity
-class RefreshToken : AbstractEntity() {
+class RefreshToken(
 
     @Column(nullable = false)
-    val expirationDate: Instant = Instant.now()
+    val expirationDate: Instant = Instant.now(),
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    val id: UUID = UUID.randomUUID()
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    lateinit var user: User
+) {
+
+    override fun toString(): String {
+        return "RefreshToken(expirationDate=$expirationDate, id=$id)"
+    }
 
 }

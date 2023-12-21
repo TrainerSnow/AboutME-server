@@ -4,6 +4,8 @@ type Query {
 
 }
 
+type Mutation {}
+
 """
 Stores information about the naming preference of a user
 """

@@ -1,0 +1,34 @@
+input NameInfoInput {
+    firstName: String!
+
+    middleName: String
+    lastName: String
+    title: String
+}
+
+extend type Mutation {
+
+    signUp(email: String!, password: String!, nameInfo: NameInfoInput): AuthUser
+
+    refresh(refreshToken: String!): AuthUser
+
+    login(email: String!, password: String!): AuthUser
+
+}
+
+
+type AuthData {
+
+    token: String!
+
+    refreshToken: String!
+
+}
+
+type AuthUser {
+
+    user: User!
+
+    authData: AuthData!
+
+}
