@@ -4,13 +4,13 @@ import com.snow.aboutme.data.model.User
 import com.snow.aboutme.data.repository.UserRepository
 import com.snow.aboutme.exception.AboutMeException
 import io.jsonwebtoken.*
+import io.jsonwebtoken.security.Keys
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.*
-import javax.crypto.spec.SecretKeySpec
 
 @Service
 class JwtService {
@@ -27,46 +27,48 @@ class JwtService {
     fun createForUser(user: User): String {
         val claims = user.createClaims()
 
+        val key = Keys.hmacShaKeyFor(secret.toByteArray())
+
         return Jwts
             .builder()
-            .claims(claims)
-            .expiration(Date.from(Instant.now().plusSeconds(expiration.toLong())))
-            .signWith(SignatureAlgorithm.HS512, secret.toByteArray())
+            .setClaims(claims)
+            .setExpiration(Date.from(Instant.now().plusSeconds(expiration.toLong())))
+            .signWith(key)
             .compact()
     }
 
     fun getTokenFromHeader(req: HttpServletRequest): String? {
-        val header = req.getHeader(AuthHeader)
-        return header.getTokenFromHeader()
+        val header: String? = req.getHeader(AuthHeader)
+        return header?.getTokenFromHeader()
     }
 
     fun getClaimsFromToken(token: String): Claims {
         return try {
             Jwts
-                .parser()
-                .verifyWith(SecretKeySpec(secret.toByteArray(), "AES"))
+                .parserBuilder()
+                .setSigningKey(secret.toByteArray())
                 .build()
-                .parseSignedClaims(token)
-                .payload
+                .parseClaimsJws(token)
+                .body
         } catch (e: MalformedJwtException) {
             throw AboutMeException.AuthException.MalformedAuthException()
         } catch (e: ExpiredJwtException) {
             throw AboutMeException.AuthException.ExpiredAuthException()
         } catch (e: JwtException) {
-            throw AboutMeException.AuthException.NoAuthException()
+            throw RuntimeException(e)
         }
     }
 
-    fun validate(req: HttpServletRequest): User {
-        val token = getTokenFromHeader(req) ?: throw AboutMeException.AuthException.NoAuthException()
+    fun validate(req: HttpServletRequest): User? {
+        val token = getTokenFromHeader(req) ?: return null
         val claims = getClaimsFromToken(token).ensureEmail()
 
         val email = claims.subject
         val user = userRepository.findByEmail(email)
-        if (user.isPresent) {
-            return user.get()
+        return if (user.isPresent) {
+            user.get()
         } else {
-            throw AboutMeException.AuthException.InsufficientAuthException()
+            null
         }
     }
 
@@ -81,12 +83,12 @@ class JwtService {
     }
 
     private fun User.createClaims(): Claims = Jwts
-        .claims()
-        .expiration(Date.from(Instant.now().plusSeconds(expiration.toLong())))
-        .issuedAt(Date.from(Instant.now()))
-        .subject(email)
-        .add("firstName", nameInfo.firstName)
-        .build()
+        .claims().apply {
+            expiration = Date.from(Instant.now().plusSeconds(this@JwtService.expiration.toLong()))
+            issuedAt = Date.from(Instant.now())
+            subject = email
+            set("firstName", nameInfo.firstName)
+        }
 
     companion object {
 

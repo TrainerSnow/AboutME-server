@@ -14,9 +14,6 @@ class TestController {
     @Autowired
     lateinit var userRepository: UserRepository
 
-    @Autowired
-    lateinit var nameInfoRepository: NameInfoRepository
-
     @QueryMapping
     @PreAuthorize("isAuthenticated()")
     fun allUsers(): List<User> {
