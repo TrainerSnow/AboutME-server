@@ -44,5 +44,11 @@ class RefreshService {
         ?.let(userRepository::findByRefreshToken)
         ?.orElse(null)
 
+    fun deleteAllForUser(user: User) {
+        user.refreshTokens = mutableSetOf()
+        userRepository.save(user)
+        refreshRepository.deleteByUser(user)
+    }
+
 
 }

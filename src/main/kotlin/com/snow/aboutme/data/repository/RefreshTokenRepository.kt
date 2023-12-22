@@ -9,6 +9,8 @@ import java.util.UUID
 
 interface RefreshTokenRepository : CrudRepository<RefreshToken, UUID> {
 
+    fun deleteByUser(user: User)
+
     fun deleteByUserAndExpirationDateBefore(user: User, expirationDate: Instant)
 
 }

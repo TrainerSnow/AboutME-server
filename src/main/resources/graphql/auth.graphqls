@@ -8,11 +8,23 @@ input NameInfoInput {
 
 extend type Mutation {
 
+    #
+    # Unauthenticated
+    #
+
     signUp(email: String!, password: String!, nameInfo: NameInfoInput): AuthUser
 
     refresh(refreshToken: String!): AuthUser
 
     login(email: String!, password: String!): AuthUser
+
+    #
+    # Authenticated
+    #
+
+    logout(refreshToken: String!): User
+
+    logoutAll: User
 
 }
 

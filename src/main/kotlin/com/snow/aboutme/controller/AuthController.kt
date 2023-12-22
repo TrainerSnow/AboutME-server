@@ -1,6 +1,7 @@
 package com.snow.aboutme.controller;
 
 import com.snow.aboutme.annotation.GraphQLAnonymous
+import com.snow.aboutme.annotation.GraphQLAuthenticated
 import com.snow.aboutme.auth.JwtService
 import com.snow.aboutme.auth.RefreshService
 import com.snow.aboutme.controller.model.AuthData
@@ -16,6 +17,7 @@ import com.snow.aboutme.util.toUUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Controller
 
@@ -70,7 +72,7 @@ class AuthController {
         val jwt = jwtService.createForUser(user)
         val refresh = refreshService.createForUser(user)
 
-        user.refreshTokens += refresh
+        user.refreshTokens.add(refresh)
         userRepository.save(user)
 
         return AuthUser(
@@ -126,6 +128,29 @@ class AuthController {
                 refreshToken = refreshToken.id.toString()
             )
         )
+    }
+
+    @MutationMapping
+    @GraphQLAuthenticated
+    fun logout(
+        @Argument refreshToken: String,
+        @AuthenticationPrincipal user: User
+    ): User {
+        user.refreshTokens.removeIf { it.id.toString() == refreshToken }
+        userRepository.save(user)
+        refreshTokenRepository.deleteById(refreshToken.toUUID()!!)
+
+        return user
+    }
+
+    @MutationMapping
+    @GraphQLAuthenticated
+    fun logoutAll(
+        @AuthenticationPrincipal user: User
+    ): User {
+        refreshService.deleteAllForUser(user)
+
+        return user
     }
 
 }
