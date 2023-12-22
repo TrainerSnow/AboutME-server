@@ -48,7 +48,7 @@ class SecurityConfig {
             .authorizeHttpRequests {
                 it
                     .requestMatchers("/auth/**").permitAll() //Authentication open to everyone
-                    .requestMatchers("/graphql").permitAll() //For testing
+                    .requestMatchers("/graphql").permitAll()
                     .requestMatchers("/graphiql").permitAll() //For playground
                     .anyRequest().authenticated()
             }

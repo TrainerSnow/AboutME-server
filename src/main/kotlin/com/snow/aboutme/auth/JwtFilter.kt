@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.WebAuthenticationDetails
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
@@ -28,7 +29,7 @@ class JwtFilter : OncePerRequestFilter() {
             return
         }
 
-        val authToken = UsernamePasswordAuthenticationToken(user.email, user.passwordHash)
+        val authToken = UsernamePasswordAuthenticationToken(user, user.passwordHash)
         authToken.details = WebAuthenticationDetails(request)
         SecurityContextHolder.getContext().authentication = authToken
 

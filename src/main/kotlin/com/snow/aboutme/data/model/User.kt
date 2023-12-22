@@ -2,6 +2,8 @@ package com.snow.aboutme.data.model
 
 import com.snow.aboutme.data.model.base.AbstractEntity
 import jakarta.persistence.*
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
 /**
  * Represents a user in the database
@@ -21,16 +23,16 @@ class User(
     var refreshToken: RefreshToken? = null,
 
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user")
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
     var persons: Set<Person> = emptySet(),
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user")
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
     var personRelations: Set<PersonRelation> = emptySet(),
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user")
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
     var dayData: Set<DayDataEntity> = emptySet()
 
-) : AbstractEntity() {
+) : AbstractEntity(), UserDetails {
 
 
     @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = false)
@@ -52,6 +54,20 @@ class User(
     override fun toString(): String {
         return "User(id='$id', email='$email', passwordHash='$passwordHash', refreshToken=${refreshToken?.id}, persons=$persons, personRelations=$personRelations, dayData=$dayData, nameInfo=$nameInfo)"
     }
+
+    override fun getAuthorities() = emptyList<GrantedAuthority>()
+
+    override fun getPassword() = passwordHash
+
+    override fun getUsername() = email
+
+    override fun isAccountNonExpired() = true
+
+    override fun isAccountNonLocked() = true
+
+    override fun isCredentialsNonExpired() = true
+
+    override fun isEnabled() = true
 
 
 }
