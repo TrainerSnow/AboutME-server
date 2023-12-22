@@ -10,6 +10,10 @@ import jakarta.persistence.*
 @Entity
 class DayDataEntity : AbstractEntity() {
 
+    //UTC-Instant
+    @Column(nullable = false)
+    var date: String? = null
+
     @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = true)
     @JoinColumn(name = "diary_data_id", nullable = true)
     var diaryData: DiaryDataEntity? = null

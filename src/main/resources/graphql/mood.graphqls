@@ -1,0 +1,20 @@
+"""
+Base for all mood data types
+"""
+interface MoodData {
+    id: ID!
+}
+
+type ConstantMoodData implements MoodData{
+    id: ID!
+
+    mood: Float!
+}
+
+type VaryingMoodData implements MoodData {
+    id: ID!
+
+    moodMorning: Float!
+    moodNoon: Float!
+    moodEvening: Float!
+}

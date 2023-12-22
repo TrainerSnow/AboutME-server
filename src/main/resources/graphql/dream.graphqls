@@ -1,0 +1,24 @@
+"""
+Data for the dreams of a user for a day
+"""
+type DreamData {
+    id: ID!
+
+    dreams: [Dream!]!
+}
+
+
+"""
+Stores information about a dream the user added
+"""
+type Dream {
+    id: ID!
+
+    description: String!
+    annotation: String
+
+    clearness: Float
+    mood: Float
+
+    persons: [Person!]!
+}

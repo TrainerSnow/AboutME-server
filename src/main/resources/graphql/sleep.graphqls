@@ -1,0 +1,9 @@
+"""
+Data for the sleep behaviour of a user for a day
+"""
+type SleepData {
+    id: ID!
+
+    hoursSlept: Float!
+    hoursAim: Float
+}
