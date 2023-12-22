@@ -27,9 +27,18 @@ dependencies {
     //Spring GraphQL
     implementation("org.springframework.boot:spring-boot-starter-graphql")
 
+    //Spring Security
+    implementation("org.springframework.security:spring-security-web")
+    implementation("org.springframework.security:spring-security-config")
+
     //Kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+    //JWT
+    implementation("io.jsonwebtoken:jjwt-api:0.11.4")
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.4")
+    implementation("io.jsonwebtoken:jjwt-gson:0.11.4")
 
     //PostgreSQL
     runtimeOnly("org.postgresql:postgresql")

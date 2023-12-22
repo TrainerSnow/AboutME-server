@@ -1,35 +1,26 @@
 package com.snow.aboutme.data.model;
 
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToMany
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToOne
+import com.snow.aboutme.data.model.base.AbstractEntity
+import jakarta.persistence.*
 
 @Entity
-class Person(
+class Person : AbstractEntity() {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = false)
+    @JoinColumn(name = "name_info_id", nullable = false)
+    lateinit var nameInfo: NameInfo
 
-    @OneToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "name_info_id")
-    val nameInfo: NameInfo = NameInfo(),
 
-    @ManyToOne
-    @JoinColumn(name = "person_relation_id")
-    val relation: PersonRelation = PersonRelation(),
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "person_relation_id", nullable = false)
+    lateinit var relation: PersonRelation
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    val user: User = User(),
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    lateinit var user: User
+
 
     @ManyToMany(mappedBy = "persons")
-    val dreams: List<Dream> = emptyList()
+    val dreams: MutableSet<DreamEntity> = mutableSetOf()
 
-)
+}

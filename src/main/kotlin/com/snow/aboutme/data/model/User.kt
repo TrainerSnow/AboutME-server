@@ -1,6 +1,9 @@
 package com.snow.aboutme.data.model
 
+import com.snow.aboutme.data.model.base.AbstractEntity
 import jakarta.persistence.*
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
 /**
  * Represents a user in the database
@@ -9,30 +12,68 @@ import jakarta.persistence.*
 @Table(name = "users")
 class User(
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
-
-    @OneToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "name_info_id")
-    val nameInfo: NameInfo = NameInfo(),
-
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "user_id")
-    val persons: List<Person> = emptyList(),
-
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "user_id")
-    val personRelations: List<PersonRelation> = emptyList(),
-
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "user_id")
-    val dayData: List<DayData> = emptyList(),
-
     @Column(nullable = false, unique = true)
-    val email: String = "",
+    var email: String = "",
 
     @Column(nullable = false)
-    val passwordHash: String = ""
+    var passwordHash: String = "",
 
-)
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
+    var refreshTokens: MutableSet<RefreshToken> = mutableSetOf(),
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
+    var persons: MutableSet<Person> = mutableSetOf(),
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
+    var personRelations: MutableSet<PersonRelation> = mutableSetOf(),
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
+    var dayData: MutableSet<DayDataEntity> = mutableSetOf()
+
+) : AbstractEntity(), UserDetails {
+
+
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = false)
+    @JoinColumn(name = "name_info_id", nullable = false)
+    lateinit var nameInfo: NameInfo
+
+    constructor(
+        email: String,
+        passwordHash: String,
+        refreshTokens: Set<RefreshToken>,
+        persons: Set<Person>,
+        personRelations: Set<PersonRelation>,
+        dayData: Set<DayDataEntity>,
+        nameInfo: NameInfo
+    ) : this(
+        email,
+        passwordHash,
+        refreshTokens.toMutableSet(),
+        persons.toMutableSet(),
+        personRelations.toMutableSet(),
+        dayData.toMutableSet()
+    ) {
+        this.nameInfo = nameInfo
+    }
+
+    override fun toString(): String {
+        return "User(id='$id', email='$email', passwordHash='$passwordHash', persons=$persons, personRelations=$personRelations, dayData=$dayData, nameInfo=$nameInfo)"
+    }
+
+    override fun getAuthorities() = emptyList<GrantedAuthority>()
+
+    override fun getPassword() = passwordHash
+
+    override fun getUsername() = email
+
+    override fun isAccountNonExpired() = true
+
+    override fun isAccountNonLocked() = true
+
+    override fun isCredentialsNonExpired() = true
+
+    override fun isEnabled() = true
+
+
+}
