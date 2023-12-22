@@ -12,12 +12,12 @@ import com.snow.aboutme.data.repository.NameInfoRepository
 import com.snow.aboutme.data.repository.RefreshTokenRepository
 import com.snow.aboutme.data.repository.UserRepository
 import com.snow.aboutme.exception.AboutMeException
+import com.snow.aboutme.util.toUUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Controller
-import java.time.Instant
 
 @Controller
 class AuthController {
@@ -60,7 +60,7 @@ class AuthController {
         val user = User(
             email = email,
             passwordHash = passwordEncoder.encode(password),
-            refreshToken = null,
+            refreshTokens = emptySet(),
             persons = emptySet(),
             personRelations = emptySet(),
             dayData = emptySet(),
@@ -70,7 +70,7 @@ class AuthController {
         val jwt = jwtService.createForUser(user)
         val refresh = refreshService.createForUser(user)
 
-        user.refreshToken = refresh
+        user.refreshTokens += refresh
         userRepository.save(user)
 
         return AuthUser(
@@ -84,10 +84,13 @@ class AuthController {
     fun refresh(
         @Argument refreshToken: String
     ): AuthUser {
-        val user = refreshService.userFor(refreshToken) ?: throw AboutMeException.AuthException.MalformedAuthException()
-        val refresh = user.refreshToken!!
+        val user =
+            refreshService.userFor(refreshToken) ?: throw AboutMeException.AuthException.MalformedAuthException()
 
-        if (refresh.expirationDate.isBefore(Instant.now())) throw AboutMeException.AuthException.ExpiredAuthException()
+        //Delete old refresh token
+        user.refreshTokens.removeIf { it.id == refreshToken.toUUID() }
+        userRepository.save(user)
+        refreshTokenRepository.deleteById(refreshToken.toUUID()!!)
 
         val newRefresh = refreshService.createForUser(user)
         val newToken = jwtService.createForUser(user)

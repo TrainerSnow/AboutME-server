@@ -18,19 +18,18 @@ class User(
     @Column(nullable = false)
     var passwordHash: String = "",
 
-    @OneToOne(cascade = [CascadeType.ALL], optional = true)
-    @JoinColumn(name = "refresh_token_id", nullable = true)
-    var refreshToken: RefreshToken? = null,
-
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
-    var persons: Set<Person> = emptySet(),
+    var refreshTokens: MutableSet<RefreshToken> = mutableSetOf(),
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
-    var personRelations: Set<PersonRelation> = emptySet(),
+    var persons: MutableSet<Person> = mutableSetOf(),
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
-    var dayData: Set<DayDataEntity> = emptySet()
+    var personRelations: MutableSet<PersonRelation> = mutableSetOf(),
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
+    var dayData: MutableSet<DayDataEntity> = mutableSetOf()
 
 ) : AbstractEntity(), UserDetails {
 
@@ -42,17 +41,24 @@ class User(
     constructor(
         email: String,
         passwordHash: String,
-        refreshToken: RefreshToken?,
+        refreshTokens: Set<RefreshToken>,
         persons: Set<Person>,
         personRelations: Set<PersonRelation>,
         dayData: Set<DayDataEntity>,
         nameInfo: NameInfo
-    ) : this(email, passwordHash, refreshToken, persons, personRelations, dayData) {
+    ) : this(
+        email,
+        passwordHash,
+        refreshTokens.toMutableSet(),
+        persons.toMutableSet(),
+        personRelations.toMutableSet(),
+        dayData.toMutableSet()
+    ) {
         this.nameInfo = nameInfo
     }
 
     override fun toString(): String {
-        return "User(id='$id', email='$email', passwordHash='$passwordHash', refreshToken=${refreshToken?.id}, persons=$persons, personRelations=$personRelations, dayData=$dayData, nameInfo=$nameInfo)"
+        return "User(id='$id', email='$email', passwordHash='$passwordHash', persons=$persons, personRelations=$personRelations, dayData=$dayData, nameInfo=$nameInfo)"
     }
 
     override fun getAuthorities() = emptyList<GrantedAuthority>()

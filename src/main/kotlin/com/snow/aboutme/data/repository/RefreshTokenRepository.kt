@@ -7,4 +7,8 @@ import java.time.Instant
 import java.util.Optional
 import java.util.UUID
 
-interface RefreshTokenRepository : CrudRepository<RefreshToken, UUID>
+interface RefreshTokenRepository : CrudRepository<RefreshToken, UUID> {
+
+    fun deleteByUserAndExpirationDateBefore(user: User, expirationDate: Instant)
+
+}

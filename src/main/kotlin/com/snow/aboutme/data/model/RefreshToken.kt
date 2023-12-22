@@ -16,8 +16,16 @@ class RefreshToken(
 
 ) {
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    lateinit var user: User
+
     override fun toString(): String {
         return "RefreshToken(expirationDate=$expirationDate, id=$id)"
+    }
+
+    constructor(expirationDate: Instant, user: User): this(expirationDate) {
+        this.user = user
     }
 
 }
