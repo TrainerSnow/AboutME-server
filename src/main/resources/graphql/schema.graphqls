@@ -1,11 +1,34 @@
+"""
+Base query type
+"""
 type Query {
 
-    # Here so we can define empty Query object
-    placeholder: Boolean
+    #
+    # Authenticated
+    #
+
+    """
+    Gets the current authenticated user
+    """
+    user: User
 
 }
 
-type Mutation {}
+"""
+Base mutation type
+"""
+type Mutation {
+
+    #
+    # Authenticated
+    #
+
+    """
+    Deletes the user
+    """
+    deleteUser: User
+
+}
 
 
 

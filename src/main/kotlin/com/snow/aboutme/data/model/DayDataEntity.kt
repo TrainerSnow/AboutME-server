@@ -6,13 +6,13 @@ import com.snow.aboutme.data.model.day.DreamDataEntity
 import com.snow.aboutme.data.model.day.MoodDataEntity
 import com.snow.aboutme.data.model.day.SleepDataEntity
 import jakarta.persistence.*
+import java.time.LocalDate
 
 @Entity
 class DayDataEntity : AbstractEntity() {
 
-    //UTC-Instant
     @Column(nullable = false)
-    var date: String? = null
+    var date: LocalDate = LocalDate.now()
 
     @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, optional = true)
     @JoinColumn(name = "diary_data_id", nullable = true)

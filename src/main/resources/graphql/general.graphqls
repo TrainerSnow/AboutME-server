@@ -1,3 +1,40 @@
+extend type Query {
+
+    #
+    # Authenticated
+    #
+
+    """
+    Gets all the [DayData] that a user has
+    """
+    dayDatas: [DayData!]!
+
+    """
+    Gets the day data for the given date if it exists
+    """
+    dayData(date: String!): DayData
+
+}
+
+extend type Mutation {
+
+    #
+    # Authenticated
+    #
+
+    """
+    Will create the day data for the given date.
+    The provided date cannot lie in the future.
+    """
+    createDayData(date: String!): DayData
+
+    """
+    Will delete the day data for the given date.
+    """
+    deleteDayData(date: String!): DayData
+
+}
+
 """
 A user that was created
 """
@@ -19,7 +56,7 @@ A day of data for a specific user
 """
 type DayData {
     id: ID!
-    date: String! #UTC Instant
+    date: String! #LocalDate (day-month-year)
 
     moodData: MoodData
     sleepData: SleepData

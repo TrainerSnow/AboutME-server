@@ -1,4 +1,29 @@
 """
+Input that bundles data to create a diary entry
+"""
+input DiaryDataInput {
+
+    diaryContent: String!
+
+}
+
+extend type Mutation {
+
+    """
+    Will add a diary data for the given day and input.
+    The provided day must already exist.
+    If a diary data is already present at that day, it will be overwritten.
+    """
+    addDiaryData(diaryDataInput: DiaryDataInput!, date: String!): DiaryData
+
+    """
+    Will delete the diary data from the given date.
+    """
+    deleteDiaryData(date: String!): DiaryData
+
+}
+
+"""
 Data for the diary of a user for a day
 """
 type DiaryData {
