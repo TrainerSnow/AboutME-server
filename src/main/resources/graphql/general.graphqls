@@ -12,7 +12,7 @@ extend type Query {
     """
     Gets the day data for the given date if it exists
     """
-    dayData(date: String!): DayData
+    dayData(date: Date!): DayData
 
 }
 
@@ -26,12 +26,12 @@ extend type Mutation {
     Will create the day data for the given date.
     The provided date cannot lie in the future.
     """
-    createDayData(date: String!): DayData
+    createDayData(date: Date!): DayData
 
     """
     Will delete the day data for the given date.
     """
-    deleteDayData(date: String!): DayData
+    deleteDayData(date: Date!): DayData
 
 }
 
@@ -56,7 +56,7 @@ A day of data for a specific user
 """
 type DayData {
     id: ID!
-    date: String! #LocalDate (day-month-year)
+    date: Date! #LocalDate (day-month-year)
 
     moodData: MoodData
     sleepData: SleepData

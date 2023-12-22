@@ -1,4 +1,9 @@
 """
+Custom scalar types
+"""
+scalar Date
+
+"""
 Base query type
 """
 type Query {

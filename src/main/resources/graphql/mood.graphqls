@@ -22,12 +22,12 @@ extend type Mutation {
     The given date must already exist.
     The given MoodDataInput must conform to either of the two mood types.
     """
-    addMoodData(moodDataInput: MoodDataInput, date: String!): MoodData
+    addMoodData(moodDataInput: MoodDataInput, date: Date!): MoodData
 
     """
     Will delete the mood data from the date.
     """
-    deleteMoodData(date: String!): MoodData
+    deleteMoodData(date: Date!): MoodData
 
 }
 

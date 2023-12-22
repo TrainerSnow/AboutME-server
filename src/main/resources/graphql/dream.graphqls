@@ -27,7 +27,7 @@ extend type Mutation {
     If there is no dream data on that date, it will be created.
     The date must not be in the future.
     """
-    addDream(dreamInput: DreamInput!, date: String!): Dream
+    addDream(dreamInput: DreamInput!, date: Date!): Dream
 
     """
     Will delete a dream matching the id
@@ -41,12 +41,12 @@ extend type Mutation {
     The provided day must already exist.
     The date must not be in the future.
     """
-    addDreamData(dreams: [ID!]!, date: String!): DreamData
+    addDreamData(dreams: [ID!]!, date: Date!): DreamData
 
     """
     Will delete the dream data at the given date
     """
-    deleteDreamData(date: String!): DreamData
+    deleteDreamData(date: Date!): DreamData
 
 }
 

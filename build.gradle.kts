@@ -26,6 +26,7 @@ dependencies {
 
     //Spring GraphQL
     implementation("org.springframework.boot:spring-boot-starter-graphql")
+    implementation("com.graphql-java:graphql-java-extended-scalars:20.0")
 
     //Spring Security
     implementation("org.springframework.security:spring-security-web")
