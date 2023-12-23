@@ -41,6 +41,24 @@ class SleepController {
 
         day.sleepData = sleepData
 
+        dayDataRepository.save(day)
+
+        return sleepData
+    }
+
+    @GraphQLAuthenticated
+    @MutationMapping
+    fun deleteSleepData(
+        @Argument date: LocalDate,
+        @AuthenticationPrincipal user: User
+    ): SleepDataEntity {
+        val day = dayDataRepository.findByUserAndDate(user, date).orElseThrow { AboutMeException.NotFoundException(date) }
+        val sleepData = day.sleepData ?: throw AboutMeException.NotFoundException(date)
+
+        day.sleepData = null
+        dayDataRepository.save(day)
+        sleepDataRepository.delete(sleepData)
+
         return sleepData
     }
 

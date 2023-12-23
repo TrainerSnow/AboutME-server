@@ -6,6 +6,8 @@ import com.snow.aboutme.data.model.day.DreamDataEntity
 import com.snow.aboutme.data.model.day.MoodDataEntity
 import com.snow.aboutme.data.model.day.SleepDataEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import java.time.LocalDate
 
 @Entity

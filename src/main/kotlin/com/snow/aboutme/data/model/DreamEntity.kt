@@ -3,6 +3,8 @@ package com.snow.aboutme.data.model;
 import com.snow.aboutme.data.model.base.AbstractEntity
 import com.snow.aboutme.data.model.day.DreamDataEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 
 @Entity
 class DreamEntity(
@@ -32,6 +34,7 @@ class DreamEntity(
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "dream_data_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     lateinit var dreamData: DreamDataEntity
 
     constructor(

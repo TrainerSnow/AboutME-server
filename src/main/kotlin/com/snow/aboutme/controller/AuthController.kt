@@ -175,6 +175,16 @@ class AuthController {
         return user
     }
 
+    @MutationMapping
+    @GraphQLAuthenticated
+    fun deleteUser(
+        @AuthenticationPrincipal user: User
+    ): User {
+        userRepository.delete(user)
+
+        return user
+    }
+
 }
 
 private fun UserRepository.validateInput(email: String) {

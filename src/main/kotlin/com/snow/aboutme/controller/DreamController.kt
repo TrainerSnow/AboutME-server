@@ -103,4 +103,24 @@ class DreamController {
         return dream
     }
 
+    @GraphQLAuthenticated
+    @MutationMapping
+    fun deleteDream(
+        @Argument id: Long,
+        @AuthenticationPrincipal user: User
+    ): DreamEntity {
+        val dream = dreamRepository.findById(id).orElseThrow { AboutMeException.NotFoundException(id) }
+        val dreamData = dream.dreamData
+
+        if(dreamData.dayData.user.id != user.id) throw AboutMeException.NotFoundException(id)
+
+        dreamData.dreams.removeIf { it.id == id }
+        dreamData.updated = Instant.now()
+
+        dreamRepository.delete(dream)
+        dreamDataRepository.save(dreamData)
+
+        return dream
+    }
+
 }
