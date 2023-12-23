@@ -9,6 +9,7 @@ import com.snow.aboutme.controller.model.AuthUser
 import com.snow.aboutme.data.graphql.NameInfoInput
 import com.snow.aboutme.data.model.NameInfo
 import com.snow.aboutme.data.model.User
+import com.snow.aboutme.data.model.update
 import com.snow.aboutme.data.repository.NameInfoRepository
 import com.snow.aboutme.data.repository.RefreshTokenRepository
 import com.snow.aboutme.data.repository.UserRepository
@@ -149,6 +150,27 @@ class AuthController {
         @AuthenticationPrincipal user: User
     ): User {
         refreshService.deleteAllForUser(user)
+
+        return user
+    }
+
+    @MutationMapping
+    @GraphQLAuthenticated
+    fun updateUser(
+        @Argument nameInfoInput: NameInfoInput,
+        @AuthenticationPrincipal user: User
+    ): User {
+        val nameInfo = user.nameInfo.update(
+            firstName = nameInfoInput.firstName,
+            middleName = nameInfoInput.middleName,
+            lastName = nameInfoInput.lastName,
+            title = nameInfoInput.title
+        )
+
+        user.nameInfo = nameInfo
+
+        userRepository.save(user)
+        nameInfoRepository.save(nameInfo)
 
         return user
     }

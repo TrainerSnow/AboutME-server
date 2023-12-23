@@ -35,20 +35,12 @@ extend type Mutation {
 """
 Base for all mood data types
 """
-interface MoodData {
-    id: ID!
-}
+type MoodData {
+    id: Long!
 
-type ConstantMoodData implements MoodData{
-    id: ID!
+    mood: Float
 
-    mood: Float!
-}
-
-type VaryingMoodData implements MoodData {
-    id: ID!
-
-    moodMorning: Float!
-    moodNoon: Float!
-    moodEvening: Float!
+    moodMorning: Float
+    moodNoon: Float
+    moodEvening: Float
 }

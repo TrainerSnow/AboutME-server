@@ -9,6 +9,14 @@ import jakarta.persistence.OneToMany
 class DreamDataEntity(
 
     @OneToMany(mappedBy = "dreamData")
-    var dreams: Set<DreamEntity> = emptySet()
+    var dreams: MutableSet<DreamEntity> = mutableSetOf()
 
-): AbstractEntity()
+) : AbstractEntity()
+
+fun DreamDataEntity?.createOrUpdate(
+    id: Long? = this?.id,
+    dreams: MutableSet<DreamEntity> = this?.dreams ?: mutableSetOf()
+) = this?.apply {
+    this.id = id
+    this.dreams = dreams
+} ?: DreamDataEntity(dreams).apply { this.id = id }

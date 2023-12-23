@@ -27,7 +27,9 @@ extend type Mutation {
 Data for the diary of a user for a day
 """
 type DiaryData {
-    id: ID!
+    id: Long!
 
     diaryContent: String!
+
+    date: Date!
 }

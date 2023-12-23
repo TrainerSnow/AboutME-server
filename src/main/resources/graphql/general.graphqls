@@ -39,7 +39,7 @@ extend type Mutation {
 A user that was created
 """
 type User {
-    id: ID!
+    id: Long!
 
     email: String!
 
@@ -55,44 +55,26 @@ type User {
 A day of data for a specific user
 """
 type DayData {
-    id: ID!
+    id: Long!
     date: Date! #LocalDate (day-month-year)
 
     moodData: MoodData
     sleepData: SleepData
     dreamData: DreamData
     diaryData: DiaryData
+
+    user: User
 }
 
 """
 Stores information about the naming preference of a user
 """
 type NameInfo {
-    id: ID!
+    id: Long!
 
     firstName: String!
 
     middleName: String
     lastName: String
     title: String
-}
-
-"""
-Stores information about a relation to a specific person
-"""
-type PersonRelation {
-    id: ID!
-
-    name: String!
-    color: String
-}
-
-"""
-Stores information about a person a user added
-"""
-type Person {
-    id: ID!
-
-    nameInfo: NameInfo!
-    personRelation: PersonRelation!
 }

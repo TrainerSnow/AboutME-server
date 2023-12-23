@@ -44,6 +44,12 @@ extend type Mutation {
     """
     logoutAll: User
 
+    """
+    Updates this user.
+    Email and password cannot be updated.
+    """
+    updateUser(nameInfoInput: NameInfoInput): User
+
 }
 
 """

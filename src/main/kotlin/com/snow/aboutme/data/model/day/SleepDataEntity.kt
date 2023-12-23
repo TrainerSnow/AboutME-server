@@ -17,3 +17,13 @@ class SleepDataEntity(
     var hoursAim: Int? = null
 
 ) : AbstractEntity()
+
+fun SleepDataEntity?.createOrUpdate(
+    id: Long? = this?.id,
+    hoursSlept: Int = this?.hoursSlept ?: 0,
+    hoursAim: Int? = this?.hoursAim
+) = this?.apply {
+    this.id = id
+    this.hoursSlept = hoursSlept
+    this.hoursAim = hoursAim
+} ?: SleepDataEntity(hoursSlept, hoursAim).apply { this.id = id  }

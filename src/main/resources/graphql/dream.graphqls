@@ -9,7 +9,7 @@ input DreamInput {
     clearness: Float
     mood: Float
 
-    persons: [ID!]!
+    persons: [Long!]
 
 }
 
@@ -24,7 +24,6 @@ extend type Mutation {
     """
     Will create a dream for the given input and date.
     The provided date must already exist.
-    If there is no dream data on that date, it will be created.
     The date must not be in the future.
     """
     addDream(dreamInput: DreamInput!, date: Date!): Dream
@@ -32,7 +31,7 @@ extend type Mutation {
     """
     Will delete a dream matching the id
     """
-    deleteDream(id: ID!): Dream
+    deleteDream(id: Long!): Dream
 
     # Dream Data
 
@@ -41,7 +40,7 @@ extend type Mutation {
     The provided day must already exist.
     The date must not be in the future.
     """
-    addDreamData(dreams: [ID!]!, date: Date!): DreamData
+    addDreamData(date: Date!): DreamData
 
     """
     Will delete the dream data at the given date
@@ -55,7 +54,7 @@ extend type Mutation {
 Data for the dreams of a user for a day
 """
 type DreamData {
-    id: ID!
+    id: Long!
 
     dreams: [Dream!]!
 }
@@ -65,7 +64,7 @@ type DreamData {
 Stores information about a dream the user added
 """
 type Dream {
-    id: ID!
+    id: Long!
 
     description: String!
     annotation: String

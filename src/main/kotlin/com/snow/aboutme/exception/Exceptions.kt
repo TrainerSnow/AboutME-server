@@ -19,27 +19,9 @@ sealed class AboutMeException(
 
         @ResponseStatus(
             value = HttpStatus.UNAUTHORIZED,
-            reason = "No valid authentication header was found"
-        )
-        class NoAuthException : AuthException("No valid authentication header was found")
-
-        @ResponseStatus(
-            value = HttpStatus.UNAUTHORIZED,
             reason = "The authentication was malformed and could not be read"
         )
         class MalformedAuthException : AuthException("The authentication was malformed and could not be read")
-
-        @ResponseStatus(
-            value = HttpStatus.UNAUTHORIZED,
-            reason = "The authentication is expired"
-        )
-        class ExpiredAuthException : AuthException("The authentication is expired")
-
-        @ResponseStatus(
-            value = HttpStatus.UNAUTHORIZED,
-            reason = "The authentication is missing data"
-        )
-        class InsufficientAuthException : AuthException("The authentication is missing data")
 
         @ResponseStatus(
             value = HttpStatus.UNAUTHORIZED,
@@ -49,9 +31,24 @@ sealed class AboutMeException(
 
     }
 
+    @ResponseStatus(
+        value = HttpStatus.NOT_FOUND,
+        reason = "Could not find the requested item!"
+    )
     data class NotFoundException(val item: Any) :
         AboutMeException("Could not find item with classifier '$item'", HttpStatus.NOT_FOUND)
 
+    @ResponseStatus(
+        value = HttpStatus.CONFLICT,
+        reason = "The request conflicted with internal state"
+    )
     data class Conflict(val item: Any) :
         AboutMeException("Could not add item with classifier '$item' as it is already used", HttpStatus.CONFLICT)
+
+    @ResponseStatus(
+        value = HttpStatus.BAD_REQUEST,
+        reason = "The data did not match given constraints"
+    )
+    data class InvalidData(val description: String) :
+            AboutMeException("The data did not match given constraints: '$description'", HttpStatus.BAD_REQUEST)
 }

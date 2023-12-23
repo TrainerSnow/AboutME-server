@@ -3,6 +3,8 @@ Custom scalar types
 """
 scalar Date
 
+scalar Long
+
 """
 Base query type
 """

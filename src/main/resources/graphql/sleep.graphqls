@@ -29,7 +29,7 @@ extend type Mutation {
 Data for the sleep behaviour of a user for a day
 """
 type SleepData {
-    id: ID!
+    id: Long!
 
     hoursSlept: Float!
     hoursAim: Float
