@@ -9,6 +9,7 @@ import com.snow.aboutme.exception.AboutMeException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
 import java.time.LocalDate
@@ -49,6 +50,21 @@ class DayController {
         userRepository.save(user)
         dayDataRepository.delete(day)
         return day
+    }
+
+    @GraphQLAuthenticated
+    @QueryMapping
+    fun dayDatas(
+        @AuthenticationPrincipal user: User
+    ): Set<DayDataEntity> = user.dayData
+
+    @GraphQLAuthenticated
+    @QueryMapping
+    fun dayData(
+        @Argument date: LocalDate,
+        @AuthenticationPrincipal user: User
+    ): DayDataEntity? {
+        return dayDataRepository.findByUserAndDate(user, date).orElse(null)
     }
 
 }
