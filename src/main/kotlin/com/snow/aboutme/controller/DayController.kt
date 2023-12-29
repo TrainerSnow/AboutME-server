@@ -64,6 +64,7 @@ class DayController {
         @Argument date: LocalDate,
         @AuthenticationPrincipal user: User
     ): DayDataEntity? {
+        println("Inside dayData with date = '$date'")
         return dayDataRepository.findByUserAndDate(user, date).orElse(null)
     }
 

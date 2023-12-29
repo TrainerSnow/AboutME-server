@@ -12,7 +12,7 @@ extend type Query {
     """
     Gets the day data for the given date if it exists
     """
-    dayData(date: Date!): DayData
+    dayData(date: Date!): DayData!
 
 }
 
@@ -26,12 +26,12 @@ extend type Mutation {
     Will create the day data for the given date.
     The provided date cannot lie in the future.
     """
-    createDayData(date: Date!): DayData
+    createDayData(date: Date!): DayData!
 
     """
     Will delete the day data for the given date.
     """
-    deleteDayData(date: Date!): DayData
+    deleteDayData(date: Date!): DayData!
 
 }
 

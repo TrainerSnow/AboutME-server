@@ -29,33 +29,33 @@ extend type Mutation {
     """
     Adds a person to the persons of the user
     """
-    addPerson(personInput: PersonInput!): Person
+    addPerson(personInput: PersonInput!): Person!
 
     """
     Deletes a person from the user
     """
-    deletePerson(id: Long!): Person
+    deletePerson(id: Long!): Person!
 
     """
     Updates the person of the user
     """
-    updatePerson(id: Long!, personInput: PersonInput!): Person
+    updatePerson(id: Long!, personInput: PersonInput!): Person!
 
 
     """
     Adds a relation to the relations of the user
     """
-    addRelation(personRelationInput: PersonRelationInput!): PersonRelation
+    addRelation(personRelationInput: PersonRelationInput!): PersonRelation!
 
     """
     Deletes a relation from the user
     """
-    deleteRelation(id: Long!): PersonRelation
+    deleteRelation(id: Long!): PersonRelation!
 
     """
     Updates the relation of the user
     """
-    updateRelation(id: Long!, relationInput: PersonRelationInput): PersonRelation
+    updateRelation(id: Long!, relationInput: PersonRelationInput): PersonRelation!
 
 }
 
