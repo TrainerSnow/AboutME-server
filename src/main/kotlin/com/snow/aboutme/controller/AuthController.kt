@@ -9,6 +9,7 @@ import com.snow.aboutme.controller.model.AuthUser
 import com.snow.aboutme.data.graphql.NameInfoInput
 import com.snow.aboutme.data.model.NameInfo
 import com.snow.aboutme.data.model.User
+import com.snow.aboutme.data.model.update
 import com.snow.aboutme.data.repository.NameInfoRepository
 import com.snow.aboutme.data.repository.RefreshTokenRepository
 import com.snow.aboutme.data.repository.UserRepository
@@ -17,6 +18,7 @@ import com.snow.aboutme.util.toUUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Controller
@@ -152,6 +154,43 @@ class AuthController {
 
         return user
     }
+
+    @MutationMapping
+    @GraphQLAuthenticated
+    fun updateUser(
+        @Argument nameInfoInput: NameInfoInput,
+        @AuthenticationPrincipal user: User
+    ): User {
+        val nameInfo = user.nameInfo.update(
+            firstName = nameInfoInput.firstName,
+            middleName = nameInfoInput.middleName,
+            lastName = nameInfoInput.lastName,
+            title = nameInfoInput.title
+        )
+
+        user.nameInfo = nameInfo
+
+        userRepository.save(user)
+        nameInfoRepository.save(nameInfo)
+
+        return user
+    }
+
+    @MutationMapping
+    @GraphQLAuthenticated
+    fun deleteUser(
+        @AuthenticationPrincipal user: User
+    ): User {
+        userRepository.delete(user)
+
+        return user
+    }
+
+    @QueryMapping
+    @GraphQLAuthenticated
+    fun user(
+        @AuthenticationPrincipal user: User
+    ): User = user
 
 }
 

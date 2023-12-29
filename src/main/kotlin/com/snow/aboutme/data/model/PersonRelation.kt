@@ -7,20 +7,30 @@ import jakarta.persistence.*
  * Represents a relation that a user may have to a person
  */
 @Entity
-class PersonRelation : AbstractEntity() {
+class PersonRelation(
 
     @Column(nullable = false)
-    val name: String = ""
+    var name: String = "",
 
     @Column(nullable = true)
-    val color: String? = null
+    var color: String? = null,
 
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "relation")
+    var persons: MutableSet<Person> = mutableSetOf()
+
+) : AbstractEntity() {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     lateinit var user: User
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "relation")
-    val persons: Set<Person> = emptySet()
+    constructor(
+        name: String,
+        color: String?,
+        persons: MutableSet<Person>,
+        user: User
+    ) : this(name, color, persons) {
+        this.user = user
+    }
 
 }

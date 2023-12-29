@@ -1,134 +1,40 @@
+"""
+Custom scalar types
+"""
+scalar Date
+
+scalar Long
+
+"""
+Base query type
+"""
 type Query {
 
-    allUsers: [User!]!
+    #
+    # Authenticated
+    #
+
+    """
+    Gets the current authenticated user
+    """
+    user: User
 
 }
 
-type Mutation {}
-
 """
-Stores information about the naming preference of a user
+Base mutation type
 """
-type NameInfo {
-    id: ID!
+type Mutation {
 
-    firstName: String!
+    #
+    # Authenticated
+    #
 
-    middleName: String
-    lastName: String
-    title: String
-}
+    """
+    Deletes the user
+    """
+    deleteUser: User
 
-"""
-Stores information about a relation to a specific person
-"""
-type PersonRelation {
-    id: ID!
-
-    name: String!
-    color: String
-}
-
-"""
-Stores information about a person a user added
-"""
-type Person {
-    id: ID!
-
-    nameInfo: NameInfo!
-    personRelation: PersonRelation!
-}
-
-"""
-Stores information about a dream the user added
-"""
-type Dream {
-    id: ID!
-
-    description: String!
-    annotation: String
-
-    clearness: Float
-    mood: Float
-
-    persons: [Person!]!
-}
-
-"""
-A user that was created
-"""
-type User {
-    id: ID!
-
-    email: String!
-
-    nameInfo: NameInfo!
-
-    persons: [Person!]!
-    personRelations: [PersonRelation!]!
-    dayData: [DayData!]!
-}
-
-"""
-A day of data for a specific user
-"""
-type DayData {
-    id: ID!
-    date: String!
-
-    moodData: MoodData
-    sleepData: SleepData
-    dreamData: DreamData
-    diaryData: DiaryData
-}
-
-"""
-Base for all mood data types
-"""
-interface MoodData {
-    id: ID!
-}
-
-type ConstantMoodData implements MoodData{
-    id: ID!
-
-    mood: Float!
-}
-
-type VaryingMoodData implements MoodData {
-    id: ID!
-
-    moodMorning: Float!
-    moodNoon: Float!
-    moodEvening: Float!
-}
-
-"""
-Data for the sleep behaviour of a user for a day
-"""
-type SleepData {
-    id: ID!
-
-    hoursSlept: Float!
-    hoursAim: Float
-}
-
-"""
-Data for the dreams of a user for a day
-"""
-type DreamData {
-    id: ID!
-
-    dreams: [Dream!]!
-}
-
-"""
-Data for the diary of a user for a day
-"""
-type DiaryData {
-    id: ID!
-
-    diaryContent: String!
 }
 
 

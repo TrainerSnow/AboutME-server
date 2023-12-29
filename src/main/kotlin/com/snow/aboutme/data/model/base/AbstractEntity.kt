@@ -14,12 +14,12 @@ abstract class AbstractEntity (
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long? = null,
 
     @CreationTimestamp(source = SourceType.DB)
-    val created: Instant? = null,
+    var created: Instant? = null,
 
     @UpdateTimestamp(source = SourceType.DB)
-    val updated: Instant? = null
+    var updated: Instant? = null
 
 )

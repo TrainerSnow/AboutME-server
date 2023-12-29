@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.snow"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -26,6 +26,7 @@ dependencies {
 
     //Spring GraphQL
     implementation("org.springframework.boot:spring-boot-starter-graphql")
+    implementation("com.graphql-java:graphql-java-extended-scalars:20.0")
 
     //Spring Security
     implementation("org.springframework.security:spring-security-web")

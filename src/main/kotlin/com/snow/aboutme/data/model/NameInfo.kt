@@ -23,3 +23,17 @@ class NameInfo(
     var title: String? = null
 
 ): AbstractEntity()
+
+fun NameInfo.update(
+    id: Long? = this.id,
+    firstName: String = this.firstName,
+    middleName: String? = this.middleName,
+    lastName: String? = this.middleName,
+    title: String? = this.title
+) = apply {
+    this.id = id
+    this.firstName = firstName
+    this.middleName = middleName
+    this.lastName = lastName
+    this.title = title
+}
