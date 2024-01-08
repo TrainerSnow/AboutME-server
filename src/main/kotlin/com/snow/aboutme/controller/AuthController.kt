@@ -89,7 +89,7 @@ class AuthController {
         @Argument refreshToken: String
     ): AuthUser {
         val user =
-            refreshService.userFor(refreshToken) ?: throw AboutMeException.AuthException.MalformedAuthException()
+            refreshService.userFor(refreshToken) ?: throw AboutMeException.NotFoundException(refreshToken)
 
         //Delete old refresh token
         user.refreshTokens.removeIf { it.id == refreshToken.toUUID() }

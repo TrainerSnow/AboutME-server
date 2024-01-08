@@ -26,12 +26,12 @@ extend type Mutation {
     The provided date must already exist.
     The date must not be in the future.
     """
-    addDream(dreamInput: DreamInput!, date: Date!): Dream
+    addDream(dreamInput: DreamInput!, date: Date!): Dream!
 
     """
     Will delete a dream matching the id
     """
-    deleteDream(id: Long!): Dream
+    deleteDream(id: Long!): Dream!
 
     # Dream Data
 
@@ -40,12 +40,12 @@ extend type Mutation {
     The provided day must already exist.
     The date must not be in the future.
     """
-    addDreamData(date: Date!): DreamData
+    addDreamData(date: Date!): DreamData!
 
     """
     Will delete the dream data at the given date
     """
-    deleteDreamData(date: Date!): DreamData
+    deleteDreamData(date: Date!): DreamData!
 
 }
 

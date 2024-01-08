@@ -14,12 +14,12 @@ extend type Mutation {
     The provided day must already exist.
     If a diary data is already present at that day, it will be overwritten.
     """
-    addDiaryData(diaryDataInput: DiaryDataInput!, date: Date!): DiaryData
+    addDiaryData(diaryDataInput: DiaryDataInput!, date: Date!): DiaryData!
 
     """
     Will delete the diary data from the given date.
     """
-    deleteDiaryData(date: Date!): DiaryData
+    deleteDiaryData(date: Date!): DiaryData!
 
 }
 
