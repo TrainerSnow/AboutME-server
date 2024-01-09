@@ -96,7 +96,7 @@ class DreamController {
         ).let(dreamRepository::save)
 
         dreamData.dreams.add(dream)
-        dreamData.updated = Instant.now() //Manually because dreams are only referencing the dream data
+        dreamData.updated = dream.updated //Manually because dreams are only referencing the dream data
 
         dreamDataRepository.save(dreamData)
 
