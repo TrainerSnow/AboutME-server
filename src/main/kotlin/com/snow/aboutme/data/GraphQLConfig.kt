@@ -3,7 +3,6 @@ package com.snow.aboutme.data;
 import com.snow.aboutme.data.graphql.InstantCoercing
 import graphql.scalars.ExtendedScalars
 import graphql.schema.GraphQLScalarType
-import graphql.schema.idl.TypeRuntimeWiring
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.graphql.execution.RuntimeWiringConfigurer
