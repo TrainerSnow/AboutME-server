@@ -1,23 +1,51 @@
 """
 An Input to bundle the information needed to create a person
 """
-input PersonInput {
-
+input CreatePersonInput {
     nameInfoInput: NameInfoInput!
 
     personRelationId: Long!
 
+    created: Instant!
+    updated: Instant!
 }
+
+"""
+An Input to bundle the information needed to update a person
+"""
+input UpdatePersonInput {
+    nameInfoInput: NameInfoInput!
+
+    personRelationId: Long!
+
+    updated: Instant!
+}
+
+
 
 """
 An Input to bundle the information needed to create a relation
 """
-input PersonRelationInput {
-
+input CreatePersonRelationInput {
     name: String!
 
     color: String
 
+    updated: Instant!
+    created: Instant!
+}
+
+
+
+"""
+An Input to bundle the information needed to update a relation
+"""
+input UpdatePersonRelationInput {
+    name: String!
+
+    color: String
+
+    updated: Instant!
 }
 
 extend type Mutation {
@@ -29,7 +57,7 @@ extend type Mutation {
     """
     Adds a person to the persons of the user
     """
-    addPerson(personInput: PersonInput!): Person!
+    addPerson(personInput: CreatePersonInput!): Person!
 
     """
     Deletes a person from the user
@@ -37,15 +65,15 @@ extend type Mutation {
     deletePerson(id: Long!): Person!
 
     """
-    Updates the person of the user
+    Updates the person of the user with the given id
     """
-    updatePerson(id: Long!, personInput: PersonInput!): Person!
+    updatePerson(id: Long!, personInput: UpdatePersonInput!): Person
 
 
     """
     Adds a relation to the relations of the user
     """
-    addRelation(personRelationInput: PersonRelationInput!): PersonRelation!
+    addRelation(personRelationInput: CreatePersonRelationInput!): PersonRelation!
 
     """
     Deletes a relation from the user
@@ -53,9 +81,9 @@ extend type Mutation {
     deleteRelation(id: Long!): PersonRelation!
 
     """
-    Updates the relation of the user
+    Updates the relation of the user with the given id and data
     """
-    updateRelation(id: Long!, relationInput: PersonRelationInput): PersonRelation!
+    updateRelation(id: Long!, relationInput: UpdatePersonRelationInput): PersonRelation!
 
 }
 
