@@ -23,13 +23,10 @@ class User(
     var refreshTokens: MutableSet<RefreshToken> = mutableSetOf(),
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
-    var persons: MutableSet<Person> = mutableSetOf(),
+    var persons: MutableSet<PersonEntity> = mutableSetOf(),
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
-    var personRelations: MutableSet<PersonRelation> = mutableSetOf(),
-
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
-    var dayData: MutableSet<DayDataEntity> = mutableSetOf()
+    var personRelations: MutableSet<RelationEntity> = mutableSetOf()
 
 ) : AbstractEntity(), UserDetails {
 
@@ -42,23 +39,21 @@ class User(
         email: String,
         passwordHash: String,
         refreshTokens: Set<RefreshToken>,
-        persons: Set<Person>,
-        personRelations: Set<PersonRelation>,
-        dayData: Set<DayDataEntity>,
+        persons: Set<PersonEntity>,
+        personRelations: Set<RelationEntity>,
         nameInfo: NameInfo
     ) : this(
         email,
         passwordHash,
         refreshTokens.toMutableSet(),
         persons.toMutableSet(),
-        personRelations.toMutableSet(),
-        dayData.toMutableSet()
+        personRelations.toMutableSet()
     ) {
         this.nameInfo = nameInfo
     }
 
     override fun toString(): String {
-        return "User(id='$id', email='$email', passwordHash='$passwordHash', persons=$persons, personRelations=$personRelations, dayData=$dayData, nameInfo=$nameInfo)"
+        return "User(id='$id', email='$email', passwordHash='$passwordHash', persons=$persons, personRelations=$personRelations, nameInfo=$nameInfo)"
     }
 
     override fun getAuthorities() = emptyList<GrantedAuthority>()

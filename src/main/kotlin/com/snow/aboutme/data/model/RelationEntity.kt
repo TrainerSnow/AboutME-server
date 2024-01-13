@@ -7,7 +7,7 @@ import jakarta.persistence.*
  * Represents a relation that a user may have to a person
  */
 @Entity
-class PersonRelation(
+class RelationEntity(
 
     @Column(nullable = false)
     var name: String = "",
@@ -16,7 +16,7 @@ class PersonRelation(
     var color: String? = null,
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "relation")
-    var persons: MutableSet<Person> = mutableSetOf()
+    var persons: MutableSet<PersonEntity> = mutableSetOf()
 
 ) : AbstractEntity() {
 
@@ -27,7 +27,7 @@ class PersonRelation(
     constructor(
         name: String,
         color: String?,
-        persons: MutableSet<Person>,
+        persons: MutableSet<PersonEntity>,
         user: User
     ) : this(name, color, persons) {
         this.user = user

@@ -67,7 +67,6 @@ class AuthController {
             refreshTokens = emptySet(),
             persons = emptySet(),
             personRelations = emptySet(),
-            dayData = emptySet(),
             nameInfo = userName
         ).let(userRepository::save)
 
@@ -166,14 +165,11 @@ class AuthController {
             middleName = nameInfoInput.middleName,
             lastName = nameInfoInput.lastName,
             title = nameInfoInput.title
-        )
+        ).let(nameInfoRepository::save)
 
         user.nameInfo = nameInfo
 
-        userRepository.save(user)
-        nameInfoRepository.save(nameInfo)
-
-        return user
+        return userRepository.save(user)
     }
 
     @MutationMapping

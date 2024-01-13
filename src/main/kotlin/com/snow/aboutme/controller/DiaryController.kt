@@ -2,16 +2,14 @@ package com.snow.aboutme.controller;
 
 import com.snow.aboutme.annotation.GraphQLAuthenticated
 import com.snow.aboutme.controller.model.DiaryDataInput
-import com.snow.aboutme.data.model.DayDataEntity
 import com.snow.aboutme.data.model.User
 import com.snow.aboutme.data.model.day.DiaryDataEntity
-import com.snow.aboutme.data.model.day.createOrUpdate
-import com.snow.aboutme.data.repository.DayDataRepository
 import com.snow.aboutme.data.repository.DiaryDataRepository
 import com.snow.aboutme.exception.AboutMeException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
 import java.time.LocalDate
@@ -20,45 +18,60 @@ import java.time.LocalDate
 class DiaryController {
 
     @Autowired
-    private lateinit var dayDataRepository: DayDataRepository
-
-    @Autowired
     private lateinit var diaryDataRepository: DiaryDataRepository
 
     @GraphQLAuthenticated
     @MutationMapping
     fun addDiaryData(
+        @AuthenticationPrincipal user: User,
         @Argument diaryDataInput: DiaryDataInput,
-        @Argument date: LocalDate,
-        @AuthenticationPrincipal user: User
     ): DiaryDataEntity {
-        val day =
-            dayDataRepository.findByUserAndDate(user, date).orElseThrow { AboutMeException.NotFoundException(date) }
+        val existing = diaryDataRepository.findByDateAndUser(diaryDataInput.date, user)
 
-        val diaryData = day.diaryData.createOrUpdate(
-            diaryContent = diaryDataInput.diaryContent,
-            date = date
-        )
-        day.diaryData = diaryData
+        return if (existing == null) {
+            val new = DiaryDataEntity(diaryDataInput.diaryContent, diaryDataInput.date, user)
+            new.created = diaryDataInput.created
+            new.updated = diaryDataInput.updated
 
-        diaryDataRepository.save(diaryData)
-        dayDataRepository.save(day)
+            diaryDataRepository.save(new)
+        } else {
+            existing.updated = diaryDataInput.updated
+            existing.diaryContent = diaryDataInput.diaryContent
+            existing.date = diaryDataInput.date
 
-        return diaryData
+            diaryDataRepository.save(existing)
+        }
     }
 
     @GraphQLAuthenticated
     @MutationMapping
     fun deleteDiaryData(
-        @Argument date: LocalDate,
-        @AuthenticationPrincipal user: User
+        @AuthenticationPrincipal user: User,
+        @Argument date: LocalDate
     ): DiaryDataEntity {
-        val day: DayDataEntity? = dayDataRepository.findByUserAndDate(user, date).orElse(null)
-        val diaryData = day?.diaryData ?: throw AboutMeException.NotFoundException(date)
+        val data = diaryDataRepository.findByDateAndUser(date, user) ?: throw AboutMeException.NotFoundException(date)
 
-        day.diaryData = null
-        dayDataRepository.save(day)
-        return diaryData
+        diaryDataRepository.delete(data)
+        return data
+    }
+
+    @GraphQLAuthenticated
+    @QueryMapping
+    fun getDiaryDataByDate(
+        @AuthenticationPrincipal user: User,
+        @Argument date: LocalDate
+    ): DiaryDataEntity {
+        val data = diaryDataRepository.findByDateAndUser(date, user) ?: throw AboutMeException.NotFoundException(date)
+
+        return data
+    }
+
+    @GraphQLAuthenticated
+    @QueryMapping
+    fun getAllDiaryDatas(
+        @AuthenticationPrincipal user: User
+    ): List<DiaryDataEntity> {
+        return diaryDataRepository.findAllByUser(user)
     }
 
 }

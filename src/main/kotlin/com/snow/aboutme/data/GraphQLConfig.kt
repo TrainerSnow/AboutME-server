@@ -1,7 +1,8 @@
 package com.snow.aboutme.data;
 
+import com.snow.aboutme.data.graphql.InstantCoercing
 import graphql.scalars.ExtendedScalars
-import graphql.schema.idl.TypeRuntimeWiring
+import graphql.schema.GraphQLScalarType
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.graphql.execution.RuntimeWiringConfigurer
@@ -15,6 +16,12 @@ class GraphQLConfig {
         builder
             .scalar(ExtendedScalars.Date)
             .scalar(ExtendedScalars.GraphQLLong)
+            .scalar(
+                GraphQLScalarType.newScalar()
+                    .name("Instant")
+                    .coercing(InstantCoercing())
+                    .build()
+            )
     }
 
 }
