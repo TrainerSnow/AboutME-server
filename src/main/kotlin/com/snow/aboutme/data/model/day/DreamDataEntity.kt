@@ -1,32 +1,33 @@
 package com.snow.aboutme.data.model.day;
 
-import com.snow.aboutme.data.model.DayDataEntity
 import com.snow.aboutme.data.model.DreamEntity
+import com.snow.aboutme.data.model.User
 import com.snow.aboutme.data.model.base.AbstractEntity
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Entity
-import jakarta.persistence.OneToMany
-import jakarta.persistence.OneToOne
-import org.hibernate.annotations.OnDelete
-import org.hibernate.annotations.OnDeleteAction
+import jakarta.persistence.*
+import java.time.LocalDate
 
 @Entity
 class DreamDataEntity(
 
     @OneToMany(mappedBy = "dreamData")
-    var dreams: MutableSet<DreamEntity> = mutableSetOf()
+    var dreams: MutableSet<DreamEntity> = mutableSetOf(),
+
+    @Column(nullable = false)
+    var date: LocalDate = LocalDate.now()
 
 ) : AbstractEntity() {
 
-    @OneToOne(mappedBy = "dreamData", cascade = [CascadeType.ALL])
-    lateinit var dayData: DayDataEntity
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    lateinit var user: User
+
+    constructor(
+        dreams: MutableSet<DreamEntity>,
+        user: User,
+        date: LocalDate
+    ) : this(dreams, date) {
+        this.user = user
+    }
 
 }
 
-fun DreamDataEntity?.createOrUpdate(
-    id: Long? = this?.id,
-    dreams: MutableSet<DreamEntity> = this?.dreams ?: mutableSetOf()
-) = this?.apply {
-    this.id = id
-    this.dreams = dreams
-} ?: DreamDataEntity(dreams).apply { this.id = id }

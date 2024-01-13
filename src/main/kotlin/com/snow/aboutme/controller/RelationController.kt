@@ -1,15 +1,16 @@
 package com.snow.aboutme.controller;
 
 import com.snow.aboutme.annotation.GraphQLAuthenticated
-import com.snow.aboutme.controller.model.PersonRelationInput
-import com.snow.aboutme.data.model.PersonRelation
+import com.snow.aboutme.controller.model.CreatePersonRelationInput
+import com.snow.aboutme.controller.model.UpdatePersonRelationInput
+import com.snow.aboutme.data.model.RelationEntity
 import com.snow.aboutme.data.model.User
 import com.snow.aboutme.data.repository.RelationRepository
-import com.snow.aboutme.data.repository.UserRepository
 import com.snow.aboutme.exception.AboutMeException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
 
@@ -19,63 +20,74 @@ class RelationController {
     @Autowired
     private lateinit var relationRepository: RelationRepository
 
-    @Autowired
-    private lateinit var userRepository: UserRepository
 
     @GraphQLAuthenticated
     @MutationMapping
     fun addRelation(
-        @Argument personRelationInput: PersonRelationInput,
-        @AuthenticationPrincipal user: User
-    ): PersonRelation {
-        val relation = PersonRelation(
+        @AuthenticationPrincipal user: User,
+        @Argument personRelationInput: CreatePersonRelationInput
+    ): RelationEntity {
+        val new = RelationEntity(
             name = personRelationInput.name,
             color = personRelationInput.color,
             persons = mutableSetOf(),
             user = user
-        ).let(relationRepository::save)
+        )
+        new.updated = personRelationInput.updated
+        new.created = personRelationInput.created
 
-        user.personRelations.add(relation)
-
-        userRepository.save(user)
-        relationRepository.save(relation)
-
-        return relation
+        return relationRepository.save(new)
     }
 
     @GraphQLAuthenticated
     @MutationMapping
     fun deleteRelation(
-        @Argument id: Long,
-        @AuthenticationPrincipal user: User
-    ): PersonRelation {
-        val relation =
-            relationRepository.findByUserAndId(user, id).orElseThrow { AboutMeException.NotFoundException(id) }
+        @AuthenticationPrincipal user: User,
+        @Argument id: Long
+    ): RelationEntity {
+        val entity = relationRepository.findByUserAndId(user, id) ?: throw AboutMeException.NotFoundException(id)
 
-        user.personRelations.removeIf { it.id == id }
-
-        userRepository.save(user)
-        relationRepository.delete(relation)
-
-        return relation
+        relationRepository.delete(entity)
+        return entity
     }
 
     @GraphQLAuthenticated
     @MutationMapping
     fun updateRelation(
+        @AuthenticationPrincipal user: User,
         @Argument id: Long,
-        @Argument relationInput: PersonRelationInput,
+        @Argument relationInput: UpdatePersonRelationInput
+    ): RelationEntity {
+        val existing = relationRepository.findByUserAndId(user, id) ?: throw AboutMeException.NotFoundException(id)
+
+        existing.updated = relationInput.updated
+        existing.color = relationInput.color
+        existing.name = relationInput.name
+
+        relationRepository.save(existing)
+
+        return existing
+    }
+
+    @GraphQLAuthenticated
+    @QueryMapping
+    fun getRelationById(
+        @AuthenticationPrincipal user: User,
+        @Argument id: Long
+    ): RelationEntity {
+        val entity = relationRepository.findByUserAndId(user, id) ?: throw AboutMeException.NotFoundException(id)
+
+        return entity
+    }
+
+    @GraphQLAuthenticated
+    @QueryMapping
+    fun getAlLRelations(
         @AuthenticationPrincipal user: User
-    ): PersonRelation {
-        val relation =
-            relationRepository.findByUserAndId(user, id).orElseThrow { AboutMeException.NotFoundException(id) }
+    ): List<RelationEntity> {
+        val all = relationRepository.findAllByUser(user)
 
-        relation.name = relationInput.name
-        relation.color = relationInput.color
-
-        relationRepository.save(relation)
-
-        return relation
+        return all
     }
 
 }

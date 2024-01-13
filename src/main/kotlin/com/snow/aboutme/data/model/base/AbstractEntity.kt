@@ -16,19 +16,4 @@ abstract class AbstractEntity(
     @Column(nullable = true)
     var updated: Instant = Instant.now()
 
-) {
-
-    @PreUpdate
-    fun onUpdate() {
-        this.updated = Instant.now()
-    }
-
-    @PrePersist
-    fun onPersist() {
-        Instant.now().let {
-            this.created = it
-            this.updated = it
-        }
-    }
-
-}
+)

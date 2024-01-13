@@ -47,7 +47,7 @@ extend type Mutation {
     """
     Will create a dream for the given input and date.
     """
-    addDream(dreamInput: CreateDreamInput!): Dream!
+    addDream(dreamInput: CreateDreamInput!): Dream
 
     """
     Will update the dream for the given id and data
@@ -57,19 +57,19 @@ extend type Mutation {
     """
     Will delete a dream matching the id
     """
-    deleteDream(id: Long!): Dream!
+    deleteDream(id: Long!): Dream
 
     # Dream Data
 
     """
     Will create a dream data for the given date, or update it if it does already exist.
     """
-    addDreamData(dreamDataInput: DreamDataInput): DreamData!
+    addDreamData(dreamDataInput: DreamDataInput): DreamData
 
     """
     Will delete the dream data at the given date
     """
-    deleteDreamData(date: Date!): DreamData!
+    deleteDreamData(date: Date!): DreamData
 
 }
 
@@ -83,7 +83,7 @@ extend type Query {
     """
     Gets all the dreams, or an empty list
     """
-    getAllDreams: [Dream!]!
+    getAllDreams: [Dream!]
 
     """
     Gets the dream data for the given date, or null
@@ -93,7 +93,7 @@ extend type Query {
     """
     Gets all the dream datas, or an empty list
     """
-    getAllDreamDatas: [DreamData!]!
+    getAllDreamDatas: [DreamData!]
 
 }
 

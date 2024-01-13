@@ -67,7 +67,6 @@ class AuthController {
             refreshTokens = emptySet(),
             persons = emptySet(),
             personRelations = emptySet(),
-            dayData = emptySet(),
             nameInfo = userName
         ).let(userRepository::save)
 

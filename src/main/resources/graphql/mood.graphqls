@@ -25,12 +25,12 @@ extend type Mutation {
     Will add the mood data from the given input.
     The given MoodDataInput must conform to either of the two mood types.
     """
-    addMoodData(moodDataInput: MoodDataInput): MoodData!
+    addMoodData(moodDataInput: MoodDataInput): MoodData
 
     """
     Will delete the mood data from the date.
     """
-    deleteMoodData(date: Date!): MoodData!
+    deleteMoodData(date: Date!): MoodData
 
 }
 
@@ -44,7 +44,7 @@ extend type Query {
     """
     Gets all the mood datas, or an empty list
     """
-    getAllMoodData: [MoodData!]!
+    getAllMoodData: [MoodData!]
 
 }
 

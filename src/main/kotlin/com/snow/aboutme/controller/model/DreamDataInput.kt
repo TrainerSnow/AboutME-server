@@ -1,11 +1,9 @@
-package com.snow.aboutme.controller.model
+package com.snow.aboutme.controller.model;
 
 import java.time.Instant
 import java.time.LocalDate
 
-data class DiaryDataInput(
-
-    val diaryContent: String,
+class DreamDataInput(
 
     val date: LocalDate,
 
